@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 export default function FavoritesScreen() {
   return (
     <View>
-      <Text>Favorites Screen</Text>
+      <Text style={{ color: "white" }}>Favorites Screen</Text>
     </View>
   );
 }
