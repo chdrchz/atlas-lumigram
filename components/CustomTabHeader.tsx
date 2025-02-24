@@ -1,54 +1,22 @@
-import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Platform } from "react-native";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { router } from "expo-router";
+import { View, Text, Pressable } from "react-native";
+import { useAuth } from "@/components/context/AuthProvider";
 
-const CustomTabHeader = () => {
-  const colorScheme = useColorScheme();
-
-  const handleButtonPress = () => {
-    router.push('/(auth)/login');
-  };
+export default function CustomHeader() {
+  const { user, signOut, isSignedIn } = useAuth();
 
   return (
-    <View style={styles.headerContainer}>
-      <TouchableOpacity
-        onPress={handleButtonPress}
-        style={[
-          styles.headerButton,
-          { backgroundColor: Colors[colorScheme ?? "light"].tint },
-        ]}
-      >
-        <Text style={styles.headerButtonText}>Login</Text>
-      </TouchableOpacity>
+    <View style={{ flexDirection: "row", justifyContent: "space-between", padding: 16 }}>
+      <Text style={{ color: "white", fontSize: 20 }}>Login Screen</Text>
+      
+      {isSignedIn ? (
+        <Pressable onPress={signOut}>
+          <Text style={{ color: "white" }}>Logout ({user?.displayName})</Text>
+        </Pressable>
+      ) : (
+        <Pressable>
+          <Text style={{ color: "white" }}>Login</Text>
+        </Pressable>
+      )}
     </View>
   );
-};
-
-const styles = StyleSheet.create({
-  headerContainer: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingTop: Platform.OS === "ios" ? 60 : 20,
-    paddingBottom: 10,
-    backgroundColor: "transparent",
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  headerButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-  },
-  headerButtonText: {
-    color: "black",
-    fontWeight: "600",
-  },
-});
-
-export default CustomTabHeader;
+}
