@@ -29,24 +29,22 @@ export default function LoginScreen() {
 
   return (
     <View>
-      <Text style={{ color: "white" }}>Login</Text>
+      <Text>Login</Text>
       
       <CustomInput 
-        style={{ color: "white" }}
         placeholder="Username"
         onChangeText={setUsername} value={username}      />
 
       <CustomInput 
-        style={{ color: "white" }}
         placeholder="Password"
         secureTextEntry
         onChangeText={setPassword} value={password}      />
 
       <Pressable onPress={handleLogin}>
-        <Text style={{ color: "white" }}>Sign In</Text>
+        <Text>Sign In</Text>
       </Pressable>
       <Link href={"/(auth)/register"}>
-        <Text style={{ color: "white" }}>Create a new account</Text>
+        <Text>Create a new account</Text>
       </Link>
     </View>
   );

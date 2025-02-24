@@ -30,24 +30,21 @@ export default function RegisterScreen() {
 
   return (
     <View>
-      <Text style={{ color: "white" }}>Register</Text>
+      <Text>Register</Text>
 
       <CustomInput
-        style={{ color: "white" }}
         placeholder="Username"
         onChangeText={setUsername}
         value={username}
       />
 
       <CustomInput
-        style={{ color: "white" }}
         placeholder="Email"
         onChangeText={setEmail}
         value={email}
       />
 
       <CustomInput
-        style={{ color: "white" }}
         placeholder="Password"
         secureTextEntry
         onChangeText={setPassword}
@@ -55,11 +52,11 @@ export default function RegisterScreen() {
       />
 
       <Pressable onPress={handleRegister}>
-        <Text style={{ color: "white" }}>Sign Up</Text>
+        <Text>Sign Up</Text>
       </Pressable>
 
       <Pressable onPress={() => router.push('/(auth)')}>
-        <Text style={{ color: "white" }}>Already have an account? Login</Text>
+        <Text>Already have an account? Login</Text>
       </Pressable>
     </View>
   );
