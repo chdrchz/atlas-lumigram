@@ -32,17 +32,15 @@ export default function LoginScreen() {
       <Text style={{ color: "white" }}>Login</Text>
       
       <CustomInput 
-        style={{ color: "white" }} 
+        style={{ color: "white" }}
         placeholder="Username"
-        onChangeText={setUsername}
-      />
+        onChangeText={setUsername} value={username}      />
 
       <CustomInput 
-        style={{ color: "white" }} 
-        placeholder="Password" 
-        secureTextEntry 
-        onChangeText={setPassword}
-      />
+        style={{ color: "white" }}
+        placeholder="Password"
+        secureTextEntry
+        onChangeText={setPassword} value={password}      />
 
       <Pressable onPress={handleLogin}>
         <Text style={{ color: "white" }}>Sign In</Text>
