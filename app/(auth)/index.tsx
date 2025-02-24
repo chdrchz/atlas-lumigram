@@ -17,40 +17,38 @@ export default function LoginScreen() {
       return;
     }
 
-    // Create user object from input field values
     const fakeUser = {
       id: "1",
       displayName: username,
-      email: `${username}@example.com`, // Simulated email
+      email: `${username}@example.com`,
     };
 
-    signIn(fakeUser); // Save user info to context
-    router.push("/(tabs)"); // Navigate to home screen
+    signIn(fakeUser);
+    router.push("/(tabs)");
   };
 
   return (
     <View>
-      <Text style={{ color: "white" }}>Login Screen</Text>
+      <Text style={{ color: "white" }}>Login</Text>
       
       <CustomInput 
         style={{ color: "white" }} 
-        placeholder="Username" 
-        onChangeText={setUsername} // Store input in state
+        placeholder="Username"
+        onChangeText={setUsername}
       />
 
       <CustomInput 
         style={{ color: "white" }} 
         placeholder="Password" 
         secureTextEntry 
-        onChangeText={setPassword} // Store password in state
+        onChangeText={setPassword}
       />
 
       <Pressable onPress={handleLogin}>
-        <Text style={{ color: "white" }}>Log In</Text>
+        <Text style={{ color: "white" }}>Sign In</Text>
       </Pressable>
-
       <Link href={"/(auth)/register"}>
-        <Text style={{ color: "white" }}>Register</Text>
+        <Text style={{ color: "white" }}>Create a new account</Text>
       </Link>
     </View>
   );
