@@ -5,21 +5,16 @@ import { Platform, StyleSheet, View } from 'react-native';
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
 
 import CustomTabHeader from '@/components/CustomTabHeader';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
 
   return (
     <View style={styles.container}>
-      <CustomTabHeader />
+      <CustomTabHeader backgroundColor="white"/>
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-          // Show the header since we're adding our custom one
           headerShown: true,
           // Use our custom header for all screens
           header: () => null,

@@ -14,7 +14,15 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-      <Stack>
+      <Stack
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: "#00003C",
+          },
+          headerShadowVisible: false,
+          headerTitle: "",
+        }}
+      >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>

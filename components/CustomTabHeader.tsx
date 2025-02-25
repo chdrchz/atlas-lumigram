@@ -1,21 +1,37 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, StyleSheet } from "react-native";
 import { useAuth } from "@/components/context/AuthProvider";
+import { router } from "expo-router";
 
-export default function CustomHeader() {
+export default function CustomHeader({ backgroundColor }) {
   const { user, signOut, isSignedIn } = useAuth();
 
   return (
-    <View style={{ flexDirection: "row", justifyContent: "flex-end", padding: 16 }}>
-      
+    <View style={[styles.container, { backgroundColor }]}>
       {isSignedIn ? (
-        <Pressable onPress={signOut}>
-          <Text>Logout</Text>
+        <Pressable style={styles.button} onPress={signOut}>
+          <Text>Welcome, ({user?.displayName}) Logout</Text>
         </Pressable>
       ) : (
-        <Pressable>
+        <Pressable style={styles.button} onPress={() => router.replace("/(auth)")}>
           <Text>Login</Text>
         </Pressable>
       )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { 
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    paddingTop: 50,
+    paddingBottom: 10,
+    paddingRight: 25,
+  },
+  button: {
+    padding: 10,
+    backgroundColor: "#1ED2AF",
+    borderRadius: 15,
+  }
+})
