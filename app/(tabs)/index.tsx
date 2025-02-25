@@ -1,16 +1,36 @@
 import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { homeFeed } from "@/placeholder";
+import { useState } from "react";
+import { LongPressGestureHandler, State } from "react-native-gesture-handler";
 
 // Feed Item Component
 const FeedItem = ({ item }) => {
+  const [showCaption, setShowCaption] = useState(false);
+
+  const handleLongPress = event => {
+    if (event.nativeEvent.state === State.ACTIVE) {
+      setShowCaption(true);
+    } else if (event.nativeEvent.state === State.END) {
+      setShowCaption(false);
+    }
+  };
+
   return (
     <View style={styles.feedItem}>
-      <Image source={{ uri: item.image }} style={styles.feedImage} />
-      <View style={styles.captionContainer}>
-        <Text style={styles.username}>{item.createdBy}</Text>
-        <Text style={styles.caption}>{item.caption}</Text>
-      </View>
+      <LongPressGestureHandler
+        onHandlerStateChange={handleLongPress}
+        minDurationMs={500}
+      >
+        <View>
+          <Image source={{ uri: item.image }} style={styles.feedImage} />
+          {showCaption && (
+            <View style={styles.overlayCaption}>
+              <Text style={styles.overlayCaptionText}>{item.caption}</Text>
+            </View>
+          )}
+        </View>
+      </LongPressGestureHandler>
     </View>
   );
 };
@@ -48,14 +68,28 @@ const styles = StyleSheet.create({
     height: width - 20,
     borderRadius: 30,
   },
-  captionContainer: {
-    padding: 10,
-  },
   username: {
     fontWeight: "bold",
     marginBottom: 4,
   },
   caption: {
     color: "#333",
+  },
+  overlayCaption: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 30,
+  },
+  overlayCaptionText: {
+    color: "#fff",
+    fontSize: 16,
+    padding: 20,
+    textAlign: "center",
   }
 });
