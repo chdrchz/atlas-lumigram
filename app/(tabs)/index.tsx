@@ -36,17 +36,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingTop: 10,
+    marginBottom: 70,
   },
   feedItem: {
     marginBottom: 15,
     backgroundColor: "#fff",
     borderRadius: 8,
-    marginHorizontal: 10,
   },
   feedImage: {
-    width: width - 20, // Full width minus margins
-    height: width - 20, // Square images
-    borderRadius: 8,
+    width: width,
+    height: width - 20,
+    borderRadius: 30,
   },
   captionContainer: {
     padding: 10,
