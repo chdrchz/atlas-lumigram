@@ -1,12 +1,12 @@
-import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
+import React, { useState, useRef } from "react";
+import { View, Text, Image, StyleSheet, Dimensions, Alert } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { homeFeed } from "@/placeholder";
-import { useState } from "react";
-import { LongPressGestureHandler, State } from "react-native-gesture-handler";
+import { LongPressGestureHandler, TapGestureHandler, State } from "react-native-gesture-handler";
 
-// Feed Item Component
 const FeedItem = ({ item }) => {
   const [showCaption, setShowCaption] = useState(false);
+  const doubleTapRef = React.useRef();
 
   const handleLongPress = event => {
     if (event.nativeEvent.state === State.ACTIVE) {
@@ -16,21 +16,47 @@ const FeedItem = ({ item }) => {
     }
   };
 
+  const handleSingleTap = event => {
+    if (event.nativeEvent.state === State.ACTIVE) {
+    }
+  };
+
+  const handleDoubleTap = event => {
+    if (event.nativeEvent.state === State.ACTIVE) {
+      Alert.alert("Double Tap", `You liked ${item.createdBy}'s post!`);
+    }
+  };
+
   return (
     <View style={styles.feedItem}>
-      <LongPressGestureHandler
-        onHandlerStateChange={handleLongPress}
-        minDurationMs={500}
+      <TapGestureHandler
+        waitFor={doubleTapRef}
+        onHandlerStateChange={handleSingleTap}
       >
         <View>
-          <Image source={{ uri: item.image }} style={styles.feedImage} />
-          {showCaption && (
-            <View style={styles.overlayCaption}>
-              <Text style={styles.overlayCaptionText}>{item.caption}</Text>
+          <TapGestureHandler
+            ref={doubleTapRef}
+            numberOfTaps={2}
+            onHandlerStateChange={handleDoubleTap}
+          >
+            <View>
+              <LongPressGestureHandler
+                onHandlerStateChange={handleLongPress}
+                minDurationMs={500}
+              >
+                <View>
+                  <Image source={{ uri: item.image }} style={styles.feedImage} />
+                  {showCaption && (
+                    <View style={styles.overlayCaption}>
+                      <Text style={styles.overlayCaptionText}>{item.caption}</Text>
+                    </View>
+                  )}
+                </View>
+              </LongPressGestureHandler>
             </View>
-          )}
+          </TapGestureHandler>
         </View>
-      </LongPressGestureHandler>
+      </TapGestureHandler>
     </View>
   );
 };
