@@ -5,16 +5,15 @@ export default function CustomHeader() {
   const { user, signOut, isSignedIn } = useAuth();
 
   return (
-    <View style={{ flexDirection: "row", justifyContent: "space-between", padding: 16 }}>
-      <Text style={{ color: "white", fontSize: 20 }}>Login Screen</Text>
+    <View style={{ flexDirection: "row", justifyContent: "flex-end", padding: 16 }}>
       
       {isSignedIn ? (
         <Pressable onPress={signOut}>
-          <Text style={{ color: "white" }}>Logout ({user?.displayName})</Text>
+          <Text>Logout</Text>
         </Pressable>
       ) : (
         <Pressable>
-          <Text style={{ color: "white" }}>Login</Text>
+          <Text>Login</Text>
         </Pressable>
       )}
     </View>

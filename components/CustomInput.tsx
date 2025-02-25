@@ -5,7 +5,16 @@ export default function CustomInput({
   secureTextEntry = false,
   onChangeText,
   value,
+  style={}
 }) {
+  const defaultStyle = {
+    borderWidth: 1,
+    borderColor: "#1ED2AF",
+    padding: 20,
+    width: "100%",
+    borderRadius: 5,
+    color: 'white'
+  };
 
   return (
     <TextInput
@@ -13,7 +22,8 @@ export default function CustomInput({
       value={value}
       onChangeText={onChangeText}
       secureTextEntry={secureTextEntry}
-      placeholderTextColor="gray"
+      placeholderTextColor="white"
+      style={{...defaultStyle, ...style}}
     />
   );
 }
