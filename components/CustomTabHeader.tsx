@@ -1,14 +1,42 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { useAuth } from "@/components/context/AuthProvider";
-import { router } from "expo-router";
+import { router, usePathname } from "expo-router";
 
 export default function CustomHeader({ backgroundColor }) {
   const { user, signOut, isSignedIn } = useAuth();
+  const pathname = usePathname();
+  
+  const getTitle = () => {
+    if (pathname === "/" || pathname === "/(tabs)" || pathname === "/(tabs)/" || pathname === "/(tabs)/index") {
+      return "Home";
+    } else if (pathname.includes("/profile")) {
+      return "Profile";
+    } else if (pathname.includes("/add-post")) {
+      return "Add Post";
+    } else if (pathname.includes("/favorites")) {
+      return "Favorites";
+    } else if (pathname.includes("/search")) {
+      return "Search";
+    }
+
+    return "Lumi Gram";
+  };
+
+  const handleLogout = async () => {
+    // First sign out using the auth context
+    await signOut();
+    
+    // Then explicitly navigate to the auth screen
+    router.replace("/(auth)");
+  };
 
   return (
     <View style={[styles.container, { backgroundColor }]}>
+      <View style={styles.titleContainer}>
+        <Text style={styles.titleText}>{getTitle()}</Text>
+      </View>
       {isSignedIn ? (
-        <Pressable style={styles.button} onPress={signOut}>
+        <Pressable style={styles.button} onPress={handleLogout}>
           <Text>Welcome, ({user?.displayName}) Logout</Text>
         </Pressable>
       ) : (
@@ -28,6 +56,15 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingBottom: 10,
     paddingRight: 25,
+  },
+  titleContainer: {
+    flex: 1,
+    paddingLeft: 20,
+  },
+  titleText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "black",
   },
   button: {
     padding: 10,
