@@ -55,12 +55,6 @@ const ImagePickerComponent: React.FC<ImagePickerProps> = ({
     <View style={styles.container}>
       {imageUri ? (
         <View style={styles.imagePreviewContainer}>
-            <Pressable 
-            style={[styles.button, styles.buttonOne]} 
-            onPress={pickImage}
-          >
-            <Text style={styles.text}>Change Photo</Text>
-          </Pressable>
           <Image 
             source={{ uri: imageUri }} 
             style={styles.imagePreview} 
@@ -71,7 +65,7 @@ const ImagePickerComponent: React.FC<ImagePickerProps> = ({
           style={[styles.button, styles.buttonOne]} 
           onPress={pickImage}
         >
-          <Text style={styles.text}>Select from Gallery</Text>
+          <Text style={styles.text}>Select image from gallery</Text>
         </Pressable>
       )}
     </View>
@@ -105,11 +99,9 @@ const styles = StyleSheet.create({
     borderColor: "black",
   },
   imagePreviewContainer: {
-    display: "flex",
-    gap: 10,
-    marginBottom: 10,
     width: '100%',
     alignItems: 'center',
+    marginBottom: 10,
   },
   imagePreview: {
     width: 300,
