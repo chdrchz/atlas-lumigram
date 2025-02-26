@@ -2,6 +2,7 @@ import { TextInput } from "react-native";
 
 export default function CustomInput({
   placeholder,
+  placeholderTextColor,
   secureTextEntry = false,
   onChangeText,
   value,
@@ -13,7 +14,6 @@ export default function CustomInput({
     padding: 20,
     width: "100%",
     borderRadius: 5,
-    color: 'white'
   };
 
   return (
@@ -22,7 +22,7 @@ export default function CustomInput({
       value={value}
       onChangeText={onChangeText}
       secureTextEntry={secureTextEntry}
-      placeholderTextColor="white"
+      placeholderTextColor={placeholderTextColor}
       style={{...defaultStyle, ...style}}
     />
   );

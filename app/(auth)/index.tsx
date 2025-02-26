@@ -44,14 +44,18 @@ export default function LoginScreen() {
       <View style={styles.inputContainer}>
         <CustomInput
           placeholder="Email"
+          placeholderTextColor={"white"}
           onChangeText={setEmail}
           value={email}
+          style={{ color: 'white' }}
         />
         <CustomInput
           placeholder="Password"
+          placeholderTextColor={"white"}
           secureTextEntry
           onChangeText={setPassword}
           value={password}
+          style={{ color: 'white' }}
         />
       </View>
       <View style={styles.buttonContainer}>
