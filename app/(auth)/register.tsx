@@ -1,34 +1,27 @@
 import { useState } from "react";
 import { View, Text, Pressable, Alert, StyleSheet } from "react-native";
 import CustomInput from "@/components/CustomInput";
-import { useAuth } from "@/components/context/AuthProvider";
+import { useAuth } from "@/components/context/FirebaseAuthProvider";
 import { useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
 import lumiAnimation from "@/assets/lumi.json";
 
 export default function RegisterScreen() {
-  const { signIn } = useAuth();
+  const auth = useAuth();
   const router = useRouter();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  const handleRegister = () => {
-    if (!username || !email || !password) {
-      Alert.alert("Error", "Please fill in all fields");
-      return;
+  async function register() {
+    try {
+      await auth.register(email, password);
+      router.replace("/(tabs)");
+    } catch(err) {
+      alert("unable to create account.");
     }
-
-    const newUser = {
-      id: Date.now().toString(),
-      displayName: username,
-      email: `${username}@example.com`,
-    };
-
-    signIn(newUser);
-    router.push("/(tabs)");
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -46,22 +39,19 @@ export default function RegisterScreen() {
         <CustomInput
           placeholder="Username"
           onChangeText={setUsername}
-          value={username}
-        />
+          value={username} placeholderTextColor={undefined}        />
         <CustomInput
           placeholder="Email"
           onChangeText={setEmail}
-          value={email}
-        />
+          value={email} placeholderTextColor={undefined}        />
         <CustomInput
           placeholder="Password"
           secureTextEntry
           onChangeText={setPassword}
-          value={password}
-        />
+          value={password} placeholderTextColor={undefined}        />
       </View>
       <View style={styles.buttonContainer}>
-        <Pressable style={[styles.button, styles.buttonOne]} onPress={handleRegister}>
+        <Pressable style={[styles.button, styles.buttonOne]} onPress={register}>
           <Text style={styles.text}>Create Account</Text>
         </Pressable>
         <Pressable style={[styles.button, styles.buttonTwo]} onPress={() => router.push('/(auth)')}>

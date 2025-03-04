@@ -2,9 +2,9 @@ import { Stack } from "expo-router";
 import { useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { AuthProvider } from "@/components/context/AuthProvider";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { View } from "react-native";
+import { FirebaseAuthProvider } from "@/components/context/FirebaseAuthProvider";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -16,7 +16,7 @@ export default function RootLayout() {
   return (
     <View style={{ flex: 1 }}>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <AuthProvider>
+        <FirebaseAuthProvider>
           <Stack
             screenOptions={{
               headerStyle: {
@@ -30,7 +30,7 @@ export default function RootLayout() {
             <Stack.Screen name="+not-found" />
           </Stack>
           <StatusBar style="light" />
-        </AuthProvider>
+        </FirebaseAuthProvider>
       </GestureHandlerRootView>
     </View>
   );

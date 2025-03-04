@@ -1,33 +1,26 @@
 import { useState } from "react";
 import { View, Text, Pressable, StyleSheet, Alert } from "react-native";
 import CustomInput from "@/components/CustomInput";
-import { AuthProvider, useAuth } from "@/components/context/AuthProvider";
 import { Link, useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
 import lumiAnimation from "@/assets/lumi.json";
+import { useAuth } from "@/components/context/FirebaseAuthProvider";
 
 export default function LoginScreen() {
-  const { signIn } = useAuth();
   const router = useRouter();
+  const auth = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    if (!email || !password) {
-      Alert.alert("Error", "Please enter both username and password");
-      return;
+  async function login() {
+    try {
+      await auth.login(email, password);
+      router.replace("/(tabs)");
+    } catch(err) {
+      alert("unable to create account.");
     }
-
-    const fakeUser = {
-      id: "1",
-      displayName: email,
-      email: `${email}`,
-    };
-
-    signIn(fakeUser);
-    router.push("/(tabs)");
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -59,7 +52,7 @@ export default function LoginScreen() {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <Pressable style={[styles.button, styles.buttonOne]} onPress={handleLogin}>
+        <Pressable style={[styles.button, styles.buttonOne]} onPress={login}>
           <Text style={styles.text}>Sign In</Text>
         </Pressable>
         <Link style={[styles.button, styles.buttonTwo]} href={"/(auth)/register"}>

@@ -1,11 +1,11 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
-import { useAuth } from "@/components/context/AuthProvider";
+import { useAuth } from "@/components/context/FirebaseAuthProvider";
 import { router, usePathname } from "expo-router";
 
 export default function CustomHeader({ backgroundColor }) {
-  const { user, signOut, isSignedIn } = useAuth();
+  const { user, logout, isSignedIn } = useAuth();
   const pathname = usePathname();
-  
+
   const getTitle = () => {
     if (pathname === "/" || pathname === "/(tabs)" || pathname === "/(tabs)/" || pathname === "/(tabs)/index") {
       return "Home";
@@ -18,16 +18,16 @@ export default function CustomHeader({ backgroundColor }) {
     } else if (pathname.includes("/search")) {
       return "Search";
     }
-
     return "Lumi Gram";
   };
 
   const handleLogout = async () => {
-    // First sign out using the auth context
-    await signOut();
-    
-    // Then explicitly navigate to the auth screen
-    router.replace("/(auth)");
+    try {
+      await logout();
+      router.replace("/(auth)");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   return (
@@ -37,7 +37,7 @@ export default function CustomHeader({ backgroundColor }) {
       </View>
       {isSignedIn ? (
         <Pressable style={styles.button} onPress={handleLogout}>
-          <Text>Welcome, ({user?.displayName}) Logout</Text>
+          <Text>Welcome, {user?.displayName || "User"} Logout</Text>
         </Pressable>
       ) : (
         <Pressable style={styles.button} onPress={() => router.replace("/(auth)")}>
@@ -71,4 +71,4 @@ const styles = StyleSheet.create({
     backgroundColor: "#1ED2AF",
     borderRadius: 15,
   }
-})
+});
