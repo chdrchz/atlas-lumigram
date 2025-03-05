@@ -6,7 +6,7 @@ import upload from "@/lib/storage";
 import firestore from "@/lib/firestore";
 import { auth } from "@/firebaseConfig";
 
-async function save(imageUri: string | null, caption: string | null) {
+async function save(imageUri: string | null, caption: string | null, handleReset: () => void) {
   if (!imageUri) {
     Alert.alert("Error", "No image selected!");
     return;
@@ -16,14 +16,19 @@ async function save(imageUri: string | null, caption: string | null) {
     const name = imageUri.split("/").pop();
     if (!name) throw new Error("Invalid file name");
     const { downloadURL } = await upload(imageUri, name);
-    firestore.addPost({
+    
+    await firestore.addPost({
       caption: caption || "",
       image: downloadURL,
       createdAt: new Date(),
       createdBy: auth.currentUser?.uid!!,
     });
+
     Alert.alert("Success", "Image uploaded!");
-    console.log("post successfully added to firestore");
+    console.log("Post successfully added to Firestore");
+    
+    handleReset(); // Reset state after successful upload
+    
   } catch (error) {
     console.error("Error uploading image:", error);
     Alert.alert("Upload Failed", "Please try again.");
@@ -65,7 +70,7 @@ export default function AddPostScreen() {
         <View style={styles.buttonContainer}>
           <Pressable
             style={[styles.button, styles.buttonOne]}
-            onPress={() => save(imageUri)}
+            onPress={() => save(imageUri, caption, handleReset)}
           >
             <Text style={styles.text}>Save</Text>
           </Pressable>

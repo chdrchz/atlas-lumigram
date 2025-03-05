@@ -17,8 +17,8 @@ const firebaseConfig = {
   projectId: "lumigram-ecf59",
   storageBucket: "lumigram-ecf59.firebasestorage.app",
   messagingSenderId: "770236813927",
-  appId: "1:770236813927:web:c4d23551c300c7afd57ac2",
-  measurementId: "G-ZRPQFZ1DFX"
+  appId: "1:770236813927:web:df38051a6602a978d57ac2",
+  measurementId: "G-RNWVRLZ7XV"
 };
 
 // Initialize Firebase
