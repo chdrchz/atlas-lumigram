@@ -1,7 +1,7 @@
 import { db } from "@/firebaseConfig";
 import { addDoc, collection } from "firebase/firestore";
 
-type Post = {
+export type Post = {
     caption: string;
     image: string;
     createdAt: Date;
