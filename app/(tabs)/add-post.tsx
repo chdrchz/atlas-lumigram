@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Pressable, Text, Alert } from 'react-native';
-import CustomInput from '@/components/CustomInput';
-import ImagePickerComponent from '@/components/ImagePicker';
-import upload from '@/lib/storage';
+import React, { useState } from "react";
+import { View, StyleSheet, Pressable, Text, Alert } from "react-native";
+import CustomInput from "@/components/CustomInput";
+import ImagePickerComponent from "@/components/ImagePicker";
+import upload from "@/lib/storage";
+import firestore from "@/lib/firestore";
+import { auth } from "@/firebaseConfig";
 
-async function save(imageUri: string | null) {
+async function save(imageUri: string | null, caption: string | null) {
   if (!imageUri) {
     Alert.alert("Error", "No image selected!");
     return;
@@ -13,10 +15,15 @@ async function save(imageUri: string | null) {
   try {
     const name = imageUri.split("/").pop();
     if (!name) throw new Error("Invalid file name");
-
-    const { downloadURL } = await upload(imageUri, name); // Call upload directly
-    console.log("Image uploaded successfully:", downloadURL);
+    const { downloadURL } = await upload(imageUri, name);
+    firestore.addPost({
+      caption: caption || "",
+      image: downloadURL,
+      createdAt: new Date(),
+      createdBy: auth.currentUser?.uid!!,
+    });
     Alert.alert("Success", "Image uploaded!");
+    console.log("post successfully added to firestore");
   } catch (error) {
     console.error("Error uploading image:", error);
     Alert.alert("Upload Failed", "Please try again.");
@@ -40,9 +47,9 @@ export default function AddPostScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <ImagePickerComponent 
-          onImageSelected={handleImageSelected} 
-          imageUri={imageUri} 
+        <ImagePickerComponent
+          onImageSelected={handleImageSelected}
+          imageUri={imageUri}
         />
       </View>
       <View style={styles.buttonContainerTwo}>
@@ -52,19 +59,19 @@ export default function AddPostScreen() {
           secureTextEntry={false}
           onChangeText={setCaption}
           value={caption}
-          style={{ color: 'black' }}
+          style={{ color: "black" }}
         />
-        
+
         <View style={styles.buttonContainer}>
-          <Pressable 
-            style={[styles.button, styles.buttonOne]} 
+          <Pressable
+            style={[styles.button, styles.buttonOne]}
             onPress={() => save(imageUri)}
           >
             <Text style={styles.text}>Save</Text>
           </Pressable>
-          
-          <Pressable 
-            style={[styles.button, styles.buttonTwo]} 
+
+          <Pressable
+            style={[styles.button, styles.buttonTwo]}
             onPress={handleReset}
           >
             <Text style={{ color: "black" }}>Reset</Text>
@@ -81,10 +88,10 @@ const styles = StyleSheet.create({
     gap: 10,
     height: "100%",
     padding: 16,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   imageContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   buttonContainer: {
     display: "flex",
