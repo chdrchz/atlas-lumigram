@@ -2,7 +2,26 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Pressable, Text, Alert } from 'react-native';
 import CustomInput from '@/components/CustomInput';
 import ImagePickerComponent from '@/components/ImagePicker';
-import { FlipInEasyX } from 'react-native-reanimated';
+import upload from '@/lib/storage';
+
+async function save(imageUri: string | null) {
+  if (!imageUri) {
+    Alert.alert("Error", "No image selected!");
+    return;
+  }
+
+  try {
+    const name = imageUri.split("/").pop();
+    if (!name) throw new Error("Invalid file name");
+
+    const { downloadURL } = await upload(imageUri, name); // Call upload directly
+    console.log("Image uploaded successfully:", downloadURL);
+    Alert.alert("Success", "Image uploaded!");
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    Alert.alert("Upload Failed", "Please try again.");
+  }
+}
 
 export default function AddPostScreen() {
   const [caption, setCaption] = useState<string | undefined>();
@@ -11,14 +30,6 @@ export default function AddPostScreen() {
   const handleImageSelected = (uri: string | null) => {
     console.log("Image selected:", uri);
     setImageUri(uri);
-  };
-
-  const handleSave = () => {
-    if (!imageUri) {
-      Alert.alert('Error', 'Please select an image first');
-      return;
-    }
-    Alert.alert('Success', 'Post created successfully!');
   };
 
   const handleReset = () => {
@@ -47,7 +58,7 @@ export default function AddPostScreen() {
         <View style={styles.buttonContainer}>
           <Pressable 
             style={[styles.button, styles.buttonOne]} 
-            onPress={handleSave}
+            onPress={() => save(imageUri)}
           >
             <Text style={styles.text}>Save</Text>
           </Pressable>

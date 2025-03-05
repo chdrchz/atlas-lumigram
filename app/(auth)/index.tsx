@@ -18,7 +18,7 @@ export default function LoginScreen() {
       await auth.login(email, password);
       router.replace("/(tabs)");
     } catch(err) {
-      alert("unable to create account.");
+      alert("unable to sign in.");
     }
   }
 
